@@ -51,79 +51,65 @@ const state = {
       icon: String.raw`assets\icons\001-beetroot.svg`,
       name: 'beetroot',
       price: 0.35,
-      AddedTocart: true,
     },
     {
       id: '002-carrot',
       icon: String.raw`assets\icons\002-carrot.svg`,
       name: 'carrot',
       price: 0.45,
-      AddedTocart: false,
     },
     {
       id: '003-apple',
       icon: String.raw`assets\icons\003-apple.svg`,
       name: 'apple',
       price: 0.45,
-      AddedTocart: false,
     },
     {
       id: '004-apricot',
       icon: String.raw`assets\icons\004-apricot.svg`,
       name: 'apricot',
       price: 0.45,
-      AddedTocart: false,
     },
     {
       id: '005-avocado',
       icon: String.raw`assets\icons\005-avocado.svg`,
       name: 'avocado',
       price: 0.45,
-      AddedTocart: false,
     },
     {
       id: '006-bananas',
       icon: String.raw`assets\icons\006-bananas.svg`,
       name: 'bananas',
       price: 0.45,
-      AddedTocart: false,
     },
     {
       id: '007-bell-pepper',
       icon: String.raw`assets\icons\007-bell-pepper.svg`,
       name: 'bell-pepper',
       price: 0.45,
-      AddedTocart: false,
     },
     {
       id: '008-cherry',
       icon: String.raw`assets\icons\008-cherry.svg`,
       name: 'cherry',
       price: 0.45,
-      AddedTocart: false,
     },
     {
       id: '009-blueberry',
       icon: String.raw`assets\icons\009-blueberry.svg`,
       name: 'blueberry',
       price: 0.45,
-      AddedTocart: false,
     },
     {
       id: '010-eggplant',
       icon: String.raw`assets\icons\010-eggplant.svg`,
       name: 'eggplant',
       price: 0.45,
-      AddedTocart: true,
     },
   ],
 
   cart: [],
 };
-
-// console.log((state.groceries[0].name = 'apples'));
-// console.log((state.showAddedTocart = true));
-// console.log(state);
 
 // RENDER GROCERIES AND CART ITEMS
 function renderGroceries() {
@@ -152,8 +138,10 @@ function renderGrocery(grocery) {
   groceryEl.append(groceryItemEl, groceryAddToCartBtn);
 
   groceryEl.addEventListener('click', function () {
+    let amount = 1;
+    state.cart.amount = amount;
+    amount + 1;
     state.cart.push(grocery);
-    console.log(grocery);
 
     renderGroceries();
   });
@@ -163,9 +151,8 @@ function renderGrocery(grocery) {
 
 // RENDER CART ITEMS
 function renderCart(grocery) {
-  console.log('inside of :', renderCart);
-
   const cartItemEl = document.createElement('li');
+  cartItemEl.setAttribute('class', 'cart-item');
 
   const cartImgEl = document.createElement('img');
   cartImgEl.setAttribute('class', 'cart--item-icon');
@@ -173,6 +160,7 @@ function renderCart(grocery) {
   cartImgEl.src = grocery.icon;
 
   const cartPEl = document.createElement('p');
+  cartPEl.innerText = grocery.name;
 
   // remove btn
   const cartRemoveBtnEl = document.createElement('button');
@@ -185,7 +173,7 @@ function renderCart(grocery) {
   const cartSpanEl = document.createElement('span');
   cartSpanEl.setAttribute('class', 'quantity-text');
   cartSpanEl.classList.add('center');
-  cartSpanEl.innerText = 1;
+  cartSpanEl.innerText = state.cart.amount;
 
   // add btn
   const cartAddBtnEl = document.createElement('button');
@@ -202,6 +190,19 @@ function renderCart(grocery) {
     cartAddBtnEl
   );
 
+  cartRemoveBtnEl.addEventListener('click', function () {
+    cartSpanEl.innerHTML = '';
+    cartSpanEl.innerText = state.cart.amount -= 1;
+    if (cartSpanEl.innerText === 0) {
+      cartItemEl.remove();
+      console.log(cartList);
+    }
+  });
+
+  cartAddBtnEl.addEventListener('click', function () {
+    cartSpanEl.innerHTML = '';
+    cartSpanEl.innerText = state.cart.amount += 1;
+  });
   cartList.append(cartItemEl);
 }
 
