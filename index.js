@@ -81,7 +81,43 @@ const state = {
       price: 0.45,
       AddedTocart: false,
     },
+    {
+      id: '006-bananas',
+      icon: String.raw`assets\icons\006-bananas.svg`,
+      name: 'bananas',
+      price: 0.45,
+      AddedTocart: false,
+    },
+    {
+      id: '007-bell-pepper',
+      icon: String.raw`assets\icons\007-bell-pepper.svg`,
+      name: 'bell-pepper',
+      price: 0.45,
+      AddedTocart: false,
+    },
+    {
+      id: '008-cherry',
+      icon: String.raw`assets\icons\008-cherry.svg`,
+      name: 'cherry',
+      price: 0.45,
+      AddedTocart: false,
+    },
+    {
+      id: '009-blueberry',
+      icon: String.raw`assets\icons\009-blueberry.svg`,
+      name: 'blueberry',
+      price: 0.45,
+      AddedTocart: false,
+    },
+    {
+      id: '010-eggplant',
+      icon: String.raw`assets\icons\010-eggplant.svg`,
+      name: 'eggplant',
+      price: 0.45,
+      AddedTocart: false,
+    },
   ],
+
   showAddedTocart: false,
 };
 
