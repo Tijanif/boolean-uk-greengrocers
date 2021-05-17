@@ -60,6 +60,27 @@ const state = {
       price: 0.45,
       AddedTocart: false,
     },
+    {
+      id: '003-apple',
+      icon: String.raw`assets\icons\003-apple.svg`,
+      name: 'apple',
+      price: 0.45,
+      AddedTocart: false,
+    },
+    {
+      id: '004-apricot',
+      icon: String.raw`assets\icons\004-apricot.svg`,
+      name: 'apricot',
+      price: 0.45,
+      AddedTocart: false,
+    },
+    {
+      id: '005-avocado',
+      icon: String.raw`assets\icons\005-avocado.svg`,
+      name: 'avocado',
+      price: 0.45,
+      AddedTocart: false,
+    },
   ],
   showAddedTocart: false,
 };
