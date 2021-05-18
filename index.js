@@ -48,61 +48,59 @@ const state = {
   groceries: [
     {
       id: '001-beetroot',
-      icon: String.raw`assets\icons\001-beetroot.svg`,
       name: 'beetroot',
       price: 0.35,
     },
     {
       id: '002-carrot',
-      icon: String.raw`assets\icons\002-carrot.svg`,
+
       name: 'carrot',
       price: 0.45,
     },
     {
       id: '003-apple',
-      icon: String.raw`assets\icons\003-apple.svg`,
+
       name: 'apple',
       price: 0.45,
     },
     {
       id: '004-apricot',
-      icon: String.raw`assets\icons\004-apricot.svg`,
+
       name: 'apricot',
       price: 0.45,
     },
     {
       id: '005-avocado',
-      icon: String.raw`assets\icons\005-avocado.svg`,
+
       name: 'avocado',
       price: 0.45,
     },
     {
       id: '006-bananas',
-      icon: String.raw`assets\icons\006-bananas.svg`,
+
       name: 'bananas',
       price: 0.45,
     },
     {
       id: '007-bell-pepper',
-      icon: String.raw`assets\icons\007-bell-pepper.svg`,
+
       name: 'bell-pepper',
       price: 0.45,
     },
     {
       id: '008-cherry',
-      icon: String.raw`assets\icons\008-cherry.svg`,
+
       name: 'cherry',
       price: 0.45,
     },
     {
       id: '009-blueberry',
-      icon: String.raw`assets\icons\009-blueberry.svg`,
+
       name: 'blueberry',
       price: 0.45,
     },
     {
       id: '010-eggplant',
-      icon: String.raw`assets\icons\010-eggplant.svg`,
       name: 'eggplant',
       price: 0.45,
     },
@@ -111,6 +109,9 @@ const state = {
   cart: [],
 };
 
+function getImagePath(grocery) {
+  return `./assets/icons/${grocery.id}.svg`;
+}
 // RENDER GROCERIES AND CART ITEMS
 function renderGroceries() {
   groceryList.innerHTML = '';
@@ -129,7 +130,7 @@ function renderGrocery(grocery) {
   const groceryItemImgEl = document.createElement('img');
   groceryItemImgEl.setAttribute('alt', grocery.name);
   groceryItemImgEl.setAttribute('id', grocery.id);
-  groceryItemImgEl.src = grocery.icon;
+  groceryItemImgEl.src = getImagePath(grocery);
 
   const groceryAddToCartBtn = document.createElement('button');
   groceryAddToCartBtn.innerText = 'Add to cart';
