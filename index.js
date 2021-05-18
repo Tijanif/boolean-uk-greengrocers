@@ -43,6 +43,7 @@ This is how an item object should look like
 // const totalEl = document.querySelector('.total-section');
 const storeListEl = document.querySelector('.store--item-list');
 const cartListEl = document.querySelector('.cart--item-list');
+const totalNumber = document.querySelector('.total-number');
 
 const state = {
   store: [
@@ -186,13 +187,13 @@ function createCartItem(cartItem) {
     renderAllItems();
   });
   cartRemoveBtnEl.addEventListener('click', function () {
-    if (cartItem.quantity === 0) {
-      // cartItem.parentNode.removeChild(cartItem);
-      console.log(state.cart);
+    if (cartItem.quantity <= 1) {
       liEl.remove();
-      state.cart.pop();
+      let itemIndex = state.cart.findIndex(function (element) {
+        return element.id === cartItem.id;
+      });
+      state.cart.splice(itemIndex, 1);
       renderAllItems();
-      console.log(state.cart);
     } else {
       cartSpanEl.innerText = cartItem.quantity--;
       renderAllItems();
@@ -209,6 +210,10 @@ function renderCartItems() {
     const liEl = createCartItem(item);
     cartListEl.append(liEl);
   }
+  let totalPrice = calculateTotal(state);
+  // call funtion calculate Total
+  // change innter text with totalnumber with result of calculate total
+  totalNumber.innerText = totalPrice;
 }
 
 //  ADD ALL ITEMS TO CART
@@ -228,6 +233,27 @@ function addItemToCart(targetItem) {
   } else {
     foundItem.quantity++;
   }
+}
+
+function calculateTotal(state) {
+  // return totalPrice = a * b
+
+  // need to find state store price
+  // need to find state cart quantity
+  let price = 0;
+  for (const cartItem of state.cart) {
+    const foundItem = state.store.find(function (storeItem) {
+      return cartItem.id === storeItem.id;
+    });
+    price += foundItem.price * cartItem.quantity;
+
+    // for (const storeItem of state.store) {
+    //   if (cartItem.id === storeItem.id) {
+    //     price += storeItem.price * cartItem.quantity;
+    //   }
+    // }
+  }
+  return price;
 }
 
 // RENDER ALL ITEMS
