@@ -41,11 +41,11 @@ This is how an item object should look like
 // const groceryUL = document.querySelector('.store--item-list');
 // const cartEl = document.querySelector('#cart');
 // const totalEl = document.querySelector('.total-section');
-const groceryList = document.querySelector('.store--item-list');
-const cartList = document.querySelector('.cart--item-list');
+const storeListEl = document.querySelector('.store--item-list');
+const cartListEl = document.querySelector('.cart--item-list');
 
 const state = {
-  groceries: [
+  store: [
     {
       id: '001-beetroot',
       name: 'beetroot',
@@ -109,102 +109,136 @@ const state = {
   cart: [],
 };
 
-function getImagePath(grocery) {
-  return `./assets/icons/${grocery.id}.svg`;
+function getImagePath(item) {
+  return `./assets/icons/${item.id}.svg`;
 }
-// RENDER GROCERIES AND CART ITEMS
-function renderGroceries() {
-  groceryList.innerHTML = '';
-  cartList.innerHTML = '';
+// CREATE STORE ITEMS
+function createStoreItem(item) {
+  const liEl = document.createElement('li');
 
-  state.groceries.forEach(renderGrocery);
-  state.cart.forEach(renderCart);
-}
+  const iconDiv = document.createElement('div');
+  iconDiv.setAttribute('class', 'store--item-icon');
 
-//  RENDER STORE ITEMS
-function renderGrocery(grocery) {
-  const groceryEl = document.createElement('li');
+  const imageEl = document.createElement('img');
+  imageEl.setAttribute('src', getImagePath(item));
+  imageEl.setAttribute('alt', item.name);
 
-  const groceryItemEl = document.createElement('div');
-  groceryItemEl.setAttribute('class', 'store--item-icon');
-  const groceryItemImgEl = document.createElement('img');
-  groceryItemImgEl.setAttribute('alt', grocery.name);
-  groceryItemImgEl.setAttribute('id', grocery.id);
-  groceryItemImgEl.src = getImagePath(grocery);
+  iconDiv.append(imageEl);
 
-  const groceryAddToCartBtn = document.createElement('button');
-  groceryAddToCartBtn.innerText = 'Add to cart';
+  const addToCartButton = document.createElement('button');
+  addToCartButton.innerText = 'Add to cart';
 
-  groceryItemEl.append(groceryItemImgEl);
-  groceryEl.append(groceryItemEl, groceryAddToCartBtn);
-
-  groceryEl.addEventListener('click', function () {
-    let amount = 1;
-    state.cart.amount = amount;
-    amount + 1;
-    state.cart.push(grocery);
-
-    renderGroceries();
+  addToCartButton.addEventListener('click', function () {
+    console.log('inside of the onclick btn');
+    cartListEl.innerHTML = '';
+    addItemToCart(item);
+    renderCartItems();
   });
 
-  groceryList.append(groceryEl);
+  liEl.append(iconDiv, addToCartButton);
+
+  return liEl;
 }
 
-// RENDER CART ITEMS
-function renderCart(grocery) {
-  const cartItemEl = document.createElement('li');
-  cartItemEl.setAttribute('class', 'cart-item');
+// RENDER STORE ITEMS
+function renderStoreItems() {
+  for (const item of state.store) {
+    const liEl = createStoreItem(item);
+    storeListEl.append(liEl);
+  }
+}
+
+//  CREATE CART ITEMS
+function createCartItem(cartItem) {
+  const storeItem = state.store.find(function (item) {
+    return item.id === cartItem.id;
+  });
+
+  const liEl = document.createElement('li');
+  liEl.setAttribute('class', 'cart-item');
 
   const cartImgEl = document.createElement('img');
   cartImgEl.setAttribute('class', 'cart--item-icon');
-  cartImgEl.setAttribute('alt', grocery.name);
-  cartImgEl.src = grocery.icon;
+  cartImgEl.setAttribute('alt', storeItem.name);
+  cartImgEl.setAttribute('src', getImagePath(cartItem));
 
   const cartPEl = document.createElement('p');
-  cartPEl.innerText = grocery.name;
+  cartPEl.innerText = storeItem.name;
 
   // remove btn
   const cartRemoveBtnEl = document.createElement('button');
-  cartRemoveBtnEl.setAttribute('class', 'quantity-btn ');
-  cartRemoveBtnEl.classList.add('remove-btn');
-  cartRemoveBtnEl.classList.add('center');
+  cartRemoveBtnEl.setAttribute('class', 'quantity-btn remove-btn center');
+
   cartRemoveBtnEl.innerText = '-';
 
   //  span
   const cartSpanEl = document.createElement('span');
-  cartSpanEl.setAttribute('class', 'quantity-text');
-  cartSpanEl.classList.add('center');
-  cartSpanEl.innerText = state.cart.amount;
+  cartSpanEl.setAttribute('class', 'quantity-text center');
+
+  cartSpanEl.innerText = cartItem.quantity;
 
   // add btn
   const cartAddBtnEl = document.createElement('button');
-  cartAddBtnEl.setAttribute('class', 'quantity-btn ');
-  cartAddBtnEl.classList.add('add-btn');
-  cartAddBtnEl.classList.add('center');
+  cartAddBtnEl.setAttribute('class', 'quantity-btn  add-btn center');
   cartAddBtnEl.innerText = '+';
 
-  cartItemEl.append(
-    cartImgEl,
-    cartPEl,
-    cartRemoveBtnEl,
-    cartSpanEl,
-    cartAddBtnEl
-  );
-
-  cartRemoveBtnEl.addEventListener('click', function () {
-    cartSpanEl.innerHTML = '';
-    cartSpanEl.innerText = state.cart.amount -= 1;
-    if (cartSpanEl.innerText === 0) {
-      cartItemEl.remove();
-      console.log(cartList);
-    }
-  });
-
-  cartAddBtnEl.addEventListener('click', function () {
-    cartSpanEl.innerHTML = '';
-    cartSpanEl.innerText = state.cart.amount += 1;
-  });
-  cartList.append(cartItemEl);
+  liEl.append(cartImgEl, cartPEl, cartRemoveBtnEl, cartSpanEl, cartAddBtnEl);
+  return liEl;
 }
 
-renderGroceries();
+// RENDER CART ITEMS
+function renderCartItems() {
+  for (const item of state.cart) {
+    const liEl = createCartItem(item);
+    cartListEl.append(liEl);
+  }
+}
+
+//  ADD ALL ITEMS TO CART
+function addItemToCart(targetItem) {
+  // IS THIS ITEM ALREADY IN THE CART
+  // APPROACH 1
+  // let itemIsInCart = false;
+  // for (const item of state.cart) {
+  //   if (item.id === targetItem.id) {
+  //     itemIsInCart = true;
+  //     item.quantity++;
+  //   }
+  // }
+
+  // if (!itemIsInCart) {
+  //   const cartItem = {
+  //     id: targetItem.id,
+  //     quantity: 1,
+  //   };
+
+  //   state.cart.push(cartItem);
+  // }
+
+  // APPROACH 2
+  const foundItem = state.cart.find(function (cartItem) {
+    return cartItem.id === targetItem.id;
+  });
+
+  if (foundItem === undefined) {
+    const cartItem = {
+      id: targetItem.id,
+      quantity: 1,
+    };
+
+    state.cart.push(cartItem);
+  } else {
+    foundItem.quantity++;
+  }
+}
+// RENDER ALL ITEMS
+function renderAllItems() {
+  storeListEl.innerHTML = '';
+  cartListEl.innerHTML = '';
+  renderStoreItems();
+  renderCartItems();
+}
+
+renderStoreItems();
+renderCartItems();
+// renderAllItems();
