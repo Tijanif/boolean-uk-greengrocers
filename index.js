@@ -129,10 +129,9 @@ function createStoreItem(item) {
   addToCartButton.innerText = 'Add to cart';
 
   addToCartButton.addEventListener('click', function () {
-    console.log('inside of the onclick btn');
-    cartListEl.innerHTML = '';
+    // cartListEl.innerHTML = '';
     addItemToCart(item);
-    renderCartItems();
+    renderAllItems();
   });
 
   liEl.append(iconDiv, addToCartButton);
@@ -168,7 +167,6 @@ function createCartItem(cartItem) {
   // remove btn
   const cartRemoveBtnEl = document.createElement('button');
   cartRemoveBtnEl.setAttribute('class', 'quantity-btn remove-btn center');
-
   cartRemoveBtnEl.innerText = '-';
 
   //  span
@@ -181,6 +179,25 @@ function createCartItem(cartItem) {
   const cartAddBtnEl = document.createElement('button');
   cartAddBtnEl.setAttribute('class', 'quantity-btn  add-btn center');
   cartAddBtnEl.innerText = '+';
+
+  cartAddBtnEl.addEventListener('click', function () {
+    cartSpanEl.innerText = cartItem.quantity++;
+    console.log(state.cart);
+    renderAllItems();
+  });
+  cartRemoveBtnEl.addEventListener('click', function () {
+    if (cartItem.quantity === 0) {
+      // cartItem.parentNode.removeChild(cartItem);
+      console.log(state.cart);
+      liEl.remove();
+      state.cart.pop();
+      renderAllItems();
+      console.log(state.cart);
+    } else {
+      cartSpanEl.innerText = cartItem.quantity--;
+      renderAllItems();
+    }
+  });
 
   liEl.append(cartImgEl, cartPEl, cartRemoveBtnEl, cartSpanEl, cartAddBtnEl);
   return liEl;
@@ -197,25 +214,6 @@ function renderCartItems() {
 //  ADD ALL ITEMS TO CART
 function addItemToCart(targetItem) {
   // IS THIS ITEM ALREADY IN THE CART
-  // APPROACH 1
-  // let itemIsInCart = false;
-  // for (const item of state.cart) {
-  //   if (item.id === targetItem.id) {
-  //     itemIsInCart = true;
-  //     item.quantity++;
-  //   }
-  // }
-
-  // if (!itemIsInCart) {
-  //   const cartItem = {
-  //     id: targetItem.id,
-  //     quantity: 1,
-  //   };
-
-  //   state.cart.push(cartItem);
-  // }
-
-  // APPROACH 2
   const foundItem = state.cart.find(function (cartItem) {
     return cartItem.id === targetItem.id;
   });
@@ -231,6 +229,7 @@ function addItemToCart(targetItem) {
     foundItem.quantity++;
   }
 }
+
 // RENDER ALL ITEMS
 function renderAllItems() {
   storeListEl.innerHTML = '';
@@ -239,6 +238,6 @@ function renderAllItems() {
   renderCartItems();
 }
 
-renderStoreItems();
-renderCartItems();
-// renderAllItems();
+// renderStoreItems();
+// renderCartItems();
+renderAllItems();
