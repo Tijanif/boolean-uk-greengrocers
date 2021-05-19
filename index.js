@@ -253,7 +253,7 @@ function calculateTotal(state) {
     //   }
     // }
   }
-  return price;
+  return price.toFixed(2);
 }
 
 // RENDER ALL ITEMS
